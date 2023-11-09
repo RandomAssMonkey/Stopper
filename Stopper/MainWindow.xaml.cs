@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Stopper
 {
@@ -20,9 +22,61 @@ namespace Stopper
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		DispatcherTimer dt = new DispatcherTimer();
+
+		Stopwatch sw = new Stopwatch();
+
+		int btnCounter;
+
+		string currentTime = string.Empty;
 		public MainWindow()
 		{
 			InitializeComponent();
+			dt.Tick += new EventHandler(dt_Tick);
+			dt.Interval = new TimeSpan(0, 0, 0, 0, 1);
+		}
+
+		void dt_Tick(object sender, EventArgs e)
+		{
+			if (sw.IsRunning)
+			{
+				TimeSpan ts = sw.Elapsed;
+				currentTime = String.Format("{0:00}:{1:00}:{2:00}",
+				ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+				clocktxtblock.Text = currentTime;
+			}
+		}
+
+		private void startbtn_Click(object sender, RoutedEventArgs e)
+		{
+			sw.Start();
+			dt.Start();
+			btnCounter++;
+			if (!(btnCounter % 2 == 0))
+			{
+				startStopBtn.Content = "Stop";
+				ResetLapBtn.Content = "Lap";
+			}
+			else
+			{
+				sw.Stop();
+				ResetLapBtn.Content = "Reset";
+				startStopBtn.Content = "Start";
+			}
+		}
+
+		private void resetbtn_Click(object sender, RoutedEventArgs e)
+		{
+			if (!(btnCounter % 2 == 0))
+			{
+				elapsedtimeitem.Items.Add(currentTime);
+			}
+			else
+			{
+				sw.Reset();
+				clocktxtblock.Text = "00:00:00";
+				elapsedtimeitem.Items.Clear();
+			}
+			}
 		}
 	}
-}

@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stopper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="Stopper" Height="450" Width="800">
+	<Grid >
+		<TextBlock x:Name="clocktxtblock" FontSize="70" Margin="246,38,37,245"></TextBlock>
+		<Button x:Name="startStopBtn" Margin="33,21,633,338"  Content="Start" FontSize="30" Click="startbtn_Click" ></Button>
+		<Button x:Name="ResetLapBtn" Margin="36,143,630,216"  Content="Reset" FontSize="30" Click="resetbtn_Click" ></Button>
+		<ListBox x:Name="elapsedtimeitem" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="433" Margin="58,320,0,0"/>
+	</Grid>
 </Window>
